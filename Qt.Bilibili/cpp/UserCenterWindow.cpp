@@ -1,4 +1,4 @@
-#include "UserCenterWindow.h"
+#include "../h/UserCenterWindow.h"
 
 UserCenterWindow::UserCenterWindow(string id, QWidget* parent)
 	: QMainWindow(parent)

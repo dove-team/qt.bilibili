@@ -14,7 +14,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E298CA41-AD35-41F2-BCA7-273549B4F49D}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.22621.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
@@ -96,16 +96,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="libs\enums\requestType.h" />
-    <ClInclude Include="libs\http\http.h" />
-    <ClInclude Include="libs\http\httplib.h" />
-    <ClInclude Include="libs\http\request.h" />
+    <ClInclude Include="enums\playMode.h" />
+    <ClInclude Include="enums\requestType.h" />
+    <ClInclude Include="http\http.h" />
+    <ClInclude Include="http\httplib.h" />
+    <ClInclude Include="http\request.h" />
     <ClInclude Include="logger.h" />
-    <ClInclude Include="playMode.h" />
-    <ClInclude Include="untils.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="qt.bilibili.libs_global.h" />
+    <ClInclude Include="untils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <QMainWindow>
 #include "ui_VideoWindow.h"
-#include "../Qt.BIlibili.Libs/playMode.h"
+#include "../Qt.BIlibili.Libs/enums/playMode.h"
 using namespace std;
 
 class VideoWindow : public QMainWindow

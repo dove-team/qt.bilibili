@@ -1,86 +1,82 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Form Files">
+    <Filter Include="ui">
       <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
       <Extensions>ui</Extensions>
     </Filter>
-    <Filter Include="Translation Files">
-      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
-      <Extensions>ts</Extensions>
+    <Filter Include="h">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="cpp">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="QtBilibili.qrc">
-      <Filter>Resource Files</Filter>
+      <Filter>res</Filter>
     </QtRcc>
-    <QtUic Include="MainWindow.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtMoc Include="MainWindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="MainWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <None Include="Qt.Bilibili.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>res</Filter>
     </None>
     <ResourceCompile Include="Qt.Bilibili.rc">
-      <Filter>Resource Files</Filter>
+      <Filter>res</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>cpp</Filter>
     </ClCompile>
-    <ClCompile Include="VideoWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="cpp\DynamicInfoWindow.cpp">
+      <Filter>cpp</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicInfoWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="cpp\MainWindow.cpp">
+      <Filter>cpp</Filter>
     </ClCompile>
-    <ClCompile Include="UserCenterWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="cpp\UserCenterWindow.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\VideoWindow.cpp">
+      <Filter>cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="VideoWindow.h">
-      <Filter>Header Files</Filter>
+    <QtMoc Include="h\DynamicInfoWindow.h">
+      <Filter>h</Filter>
     </QtMoc>
-    <QtMoc Include="DynamicInfoWindow.h">
-      <Filter>Header Files</Filter>
+    <QtMoc Include="h\MainWindow.h">
+      <Filter>h</Filter>
     </QtMoc>
-    <QtMoc Include="UserCenterWindow.h">
-      <Filter>Header Files</Filter>
+    <QtMoc Include="h\UserCenterWindow.h">
+      <Filter>h</Filter>
+    </QtMoc>
+    <QtMoc Include="h\VideoWindow.h">
+      <Filter>h</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Navigator.h">
-      <Filter>Header Files</Filter>
+      <Filter>h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="VideoWindow.ui">
-      <Filter>Form Files</Filter>
+    <QtUic Include="ui\DynamicInfoWindow.ui">
+      <Filter>ui</Filter>
     </QtUic>
-    <QtUic Include="DynamicInfoWindow.ui">
-      <Filter>Form Files</Filter>
+    <QtUic Include="ui\MainWindow.ui">
+      <Filter>ui</Filter>
     </QtUic>
-    <QtUic Include="UserCenterWindow.ui">
-      <Filter>Form Files</Filter>
+    <QtUic Include="ui\UserCenterWindow.ui">
+      <Filter>ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\VideoWindow.ui">
+      <Filter>ui</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>

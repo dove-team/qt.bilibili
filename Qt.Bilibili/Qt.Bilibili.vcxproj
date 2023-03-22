@@ -14,7 +14,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2FBA9EED-CA1B-484E-AFB8-420AC358BA6A}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
@@ -96,28 +96,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DynamicInfoWindow.cpp" />
-    <ClCompile Include="UserCenterWindow.cpp" />
-    <ClCompile Include="VideoWindow.cpp" />
+    <QtUic Include="ui\DynamicInfoWindow.ui" />
+    <QtUic Include="ui\MainWindow.ui" />
+    <QtUic Include="ui\UserCenterWindow.ui" />
+    <QtUic Include="ui\VideoWindow.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cpp\MainWindow.cpp" />
+    <ClCompile Include="cpp\VideoWindow.cpp" />
+    <ClCompile Include="cpp\DynamicInfoWindow.cpp" />
+    <ClCompile Include="cpp\UserCenterWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="h\MainWindow.h" />
+    <QtMoc Include="h\VideoWindow.h" />
+    <QtMoc Include="h\UserCenterWindow.h" />
+    <QtMoc Include="h\DynamicInfoWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
     <QtRcc Include="QtBilibili.qrc" />
-    <QtUic Include="DynamicInfoWindow.ui" />
-    <QtUic Include="MainWindow.ui" />
-    <QtMoc Include="MainWindow.h" />
-    <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="packages.config" />
     <None Include="Qt.Bilibili.ico" />
-    <QtUic Include="UserCenterWindow.ui" />
-    <QtUic Include="VideoWindow.ui" />
-    <ResourceCompile Include="Qt.Bilibili.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="VideoWindow.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="UserCenterWindow.h" />
-    <QtMoc Include="DynamicInfoWindow.h" />
     <ClInclude Include="Navigator.h" />
+    <ResourceCompile Include="Qt.Bilibili.rc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Qt.BIlibili.Libs\Qt.BIlibili.Libs.vcxproj">

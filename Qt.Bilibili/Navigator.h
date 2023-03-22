@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include "../Qt.BIlibili.Libs/enums/playMode.h"
 #include "../Qt.BIlibili.Libs/untils.h"
-#include "../Qt.BIlibili.Libs/playMode.h"
-#include "DynamicInfoWindow.h"
-#include "UserCenterWindow.h"
-#include "VideoWindow.h"
+#include "h/DynamicInfoWindow.h"
+#include "h/UserCenterWindow.h"
+#include "h/VideoWindow.h"
 
 class Navigator
 {

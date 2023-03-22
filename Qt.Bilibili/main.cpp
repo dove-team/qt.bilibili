@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+#include "h/MainWindow.h"
 #include <QSharedMemory>
 #include <QtWidgets/QApplication>
 

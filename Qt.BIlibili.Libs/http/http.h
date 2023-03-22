@@ -1,7 +1,7 @@
 #pragma once
-#include "logger.h"
+#include "../logger.h"
 #include "request.h"
-#include "libs\httplib.h"
+#include "httplib.h"
 using namespace std;
 template <typename T>
 

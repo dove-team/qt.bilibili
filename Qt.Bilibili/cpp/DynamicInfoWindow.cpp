@@ -1,4 +1,4 @@
-#include "DynamicInfoWindow.h"
+#include "../h/DynamicInfoWindow.h"
 
 DynamicInfoWindow::DynamicInfoWindow(string id,QWidget *parent)
 	: QMainWindow(parent)

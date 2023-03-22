@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "httplib.h"
-#include "../../enums.h"
+#include "../enums/requestType.h"
 using namespace std;
 
 class request {

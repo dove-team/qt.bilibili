@@ -1,16 +1,20 @@
 #ifndef QT_BILIBILI_LIBS_GLOBAL_H
 #define QT_BILIBILI_LIBS_GLOBAL_H
-
 #include "qt.bilibili.libs_global.h"
+#include "cryptopp/md5.h"
+#pragma comment(lib,"cryptlib.lib")
 #include "logger.h"
 #include "json/json.h"
 #include <iostream>
 #include <regex>
-#define OUT
+#include <iomanip>
 using namespace std;
+using namespace CryptoPP;
+#define OUT
+#define MD5_CRYPT_LEN 16
 
 class untils {
-private :
+private:
     unsigned char ToHex(unsigned char x) {
         return  x > 9 ? x + 55 : x + 48;
     }
@@ -23,6 +27,21 @@ private :
         return y;
     }
 public:
+    string toMd5(string str) {
+        MD5 md5;
+        CryptoPP::byte digest[MD5_CRYPT_LEN] = { 0 };
+        int len = str.length();
+        CryptoPP::byte* message = new CryptoPP::byte[len + 1];
+        message[len] = 0;
+        memcpy(message, str.c_str(), len + 1);
+        md5.CalculateDigest(digest, message, len);
+        ostringstream osstr;
+        osstr << hex << uppercase << setfill('0');
+        for (int i = 0; i < MD5_CRYPT_LEN; ++i)
+            osstr << setw(2) << int(digest[i]);
+        delete[]message;
+        return osstr.str();
+    }
     string UrlEncode(const string& str, string& dst) {
         dst = "";
         size_t length = str.length();
@@ -70,7 +89,7 @@ public:
             JSONCPP_STRING err;
             Json::CharReaderBuilder builder;
             auto rawJsonLength = static_cast<int>(rawJson.length());
-            const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+            const unique_ptr<Json::CharReader> reader(builder.newCharReader());
             if (!reader->parse(rawJson.c_str(), rawJson.c_str() + rawJsonLength, &root, &err)) {
                 log.logError(err);
                 result = root;
@@ -82,7 +101,7 @@ public:
         }
         return EXIT_SUCCESS;
     }
-    bool stringify(Json::Value root, OUT string *json_str) {
+    bool stringify(Json::Value root, OUT string* json_str) {
         logger log;
         try {
             Json::StreamWriterBuilder builder;
@@ -101,13 +120,13 @@ public:
             dst_str.replace(pos, sub_str.length(), new_str);
         return dst_str;
     }
-    string replace(string resource_str, map<string,string> sub_str) {
+    string replace(string resource_str, map<string, string> sub_str) {
         string dst_str = resource_str;
         for (auto i = sub_str.begin(); i != sub_str.end(); i++)
             dst_str = replace(dst_str, i->first, i->second);
         return dst_str;
     }
-    bool regexMatch(string input, string pattern, OUT string *result) {
+    bool regexMatch(string input, string pattern, OUT string* result) {
         try
         {
             regex reg(pattern);
@@ -118,7 +137,7 @@ public:
                 return false;
             }
         }
-        catch (const std::exception&) {}
+        catch (const exception&) {}
         return false;
     }
 };
