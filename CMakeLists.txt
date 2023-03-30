@@ -1,21 +1,10 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.0.0)
+
 project(qt.bilibili)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
-find_package(Qt6 COMPONENTS
-        Core
-        Gui
-        Widgets
-        REQUIRED)
-
-add_executable(qt.bilibili main.cpp)
-target_link_libraries(qt.bilibili
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
-        )
+add_subdirectory(Qt.Bilibili)
