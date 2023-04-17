@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <iostream>
 #include "../Qt.BIlibili.Libs/enums/playMode.h"

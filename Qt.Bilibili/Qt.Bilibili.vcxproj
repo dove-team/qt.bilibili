@@ -118,6 +118,7 @@
     <ClCompile Include="main.cpp" />
     <None Include="packages.config" />
     <None Include="Qt.Bilibili.ico" />
+    <ClInclude Include="ffmpegView.h" />
     <ClInclude Include="Navigator.h" />
     <ResourceCompile Include="Qt.Bilibili.rc" />
   </ItemGroup>

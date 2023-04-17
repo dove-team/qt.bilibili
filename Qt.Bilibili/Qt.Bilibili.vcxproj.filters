@@ -17,6 +17,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{bb66382b-cec4-4173-97b3-8e55e5a61113}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="QtBilibili.qrc">
@@ -62,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Navigator.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="ffmpegView.h">
       <Filter>h</Filter>
     </ClInclude>
   </ItemGroup>
