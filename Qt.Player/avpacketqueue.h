@@ -18,12 +18,9 @@ public:
     bool isEmpty();
     void empty();
     int queueSize();
-
 private:
     SDL_mutex* mutex;
     SDL_cond* cond;
-
     QQueue<AVPacket> queue;
 };
-
-#endif // AVPACKETQUEUE_H
+#endif

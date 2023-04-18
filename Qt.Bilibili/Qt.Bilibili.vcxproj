@@ -123,6 +123,7 @@
   <ItemGroup>
     <QtRcc Include="QtBilibili.qrc" />
     <ClCompile Include="main.cpp" />
+    <None Include="cpp.hint" />
     <None Include="packages.config" />
     <None Include="Qt.Bilibili.ico" />
     <ClInclude Include="Navigator.h" />

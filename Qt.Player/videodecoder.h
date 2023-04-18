@@ -15,10 +15,9 @@ extern "C"
 #include "libavcodec/avfft.h"
 #include "libavutil/imgutils.h"
 }
-
 #include "audiodecoder.h"
 
-class QT_PLAYER_EXPORT Decoder : public QThread
+class QT_PLAYER_EXPORT VideoDecoder : public QThread
 {
     Q_OBJECT
 public:
@@ -28,39 +27,31 @@ public:
         PLAYING,
         FINISH
     };
-    explicit Decoder();
-    ~Decoder();
-
+    explicit VideoDecoder();
+    ~VideoDecoder();
     double getCurrentTime();
     void seekProgress(qint64 pos);
     int getVolume();
     void setVolume(int volume);
-
 private:
     void run();
     void clearData();
-    void setPlayState(Decoder::PlayState state);
+    void setPlayState(VideoDecoder::PlayState state);
     void displayVideo(QImage image);
     static int videoThread(void* arg);
     double synchronize(AVFrame* frame, double pts);
     bool isRealtime(AVFormatContext* pFormatCtx);
     int initFilter();
-
     int fileType;
-
     int videoIndex;
     int audioIndex;
     int subtitleIndex;
-
     QString currentFile;
     QString currentType;
-
     qint64 timeTotal;
-
     AVPacket seekPacket;
     qint64 seekPos;
     double seekTime;
-
     PlayState playState;
     bool isStop;
     bool gotStop;
@@ -68,36 +59,25 @@ private:
     bool isSeek;
     bool isReadFinished;
     bool isDecodeFinished;
-
     AVFormatContext* pFormatCtx;
-
-    AVCodecContext* pCodecCtx;          // video codec context
-
+    AVCodecContext* pCodecCtx;
     AvPacketQueue videoQueue;
     AvPacketQueue subtitleQueue;
-
     AVStream* videoStream;
-
-    double videoClk;    // video frame timestamp
-
+    double videoClk;
     AudioDecoder* audioDecoder;
-
     AVFilterGraph* filterGraph;
     AVFilterContext* filterSinkCxt;
     AVFilterContext* filterSrcCxt;
-
 public slots:
     void decoderFile(QString file, QString type);
     void stopVideo();
     void pauseVideo();
     void audioFinished();
-
 signals:
     void readFinished();
     void gotVideo(QImage image);
     void gotVideoTime(qint64 time);
-    void playStateChanged(Decoder::PlayState state);
-
+    void playStateChanged(VideoDecoder::PlayState state);
 };
-
-#endif // DECODER_H
+#endif 

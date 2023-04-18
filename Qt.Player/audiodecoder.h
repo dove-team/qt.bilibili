@@ -2,7 +2,6 @@
 #define AUDIODECODER_H
 #include <QObject>
 #include "qt.player_global.h"
-
 extern "C"
 {
 #include "libswresample/swresample.h"
@@ -17,7 +16,6 @@ extern "C"
 #include <libavutil/avassert.h>
 #include <libavutil/imgutils.h>
 }
-
 #include "avpacketqueue.h"
 
 class QT_PLAYER_EXPORT AudioDecoder : public QObject
@@ -35,7 +33,6 @@ public:
     void packetEnqueue(AVPacket* packet);
     void emptyAudioData();
     void setTotalTime(qint64 time);
-
 private:
     int decodeAudio();
     static void audioCallback(void* userdata, quint8* stream, int SDL_AudioBufSize);
@@ -46,33 +43,28 @@ private:
     double clock;
     int volume;
     AVStream* stream;
-
     quint8* audioBuf;
     quint32 audioBufSize;
     DECLARE_ALIGNED(16, quint8, audioBuf1)[192000];
     quint32 audioBufSize1;
     quint32 audioBufIndex;
     SDL_AudioSpec spec;
-    quint32 audioDeviceFormat;  // audio device sample format
+    quint32 audioDeviceFormat;
     quint8 audioDepth;
     struct SwrContext* aCovertCtx;
     qint64 audioDstChannelLayout;
-    enum AVSampleFormat audioDstFmt;   // audio decode sample format
+    enum AVSampleFormat audioDstFmt;
     qint64 audioSrcChannelLayout;
     int audioSrcChannels;
     enum AVSampleFormat audioSrcFmt;
     int audioSrcFreq;
-    AVCodecContext* codecCtx;          // audio codec context
+    AVCodecContext* codecCtx;
     AvPacketQueue packetQueue;
     AVPacket packet;
     int sendReturn;
-
 signals:
     void playFinished();
-
 public slots:
     void readFileFinished();
-
 };
-
 #endif 

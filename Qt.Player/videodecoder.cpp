@@ -2,7 +2,7 @@
 
 #include "videodecoder.h"
 
-Decoder::Decoder() :
+VideoDecoder::VideoDecoder() :
     timeTotal(0),
     playState(STOP),
     isStop(false),
@@ -17,14 +17,14 @@ Decoder::Decoder() :
     connect(audioDecoder, SIGNAL(playFinished()), this, SLOT(audioFinished()));
     connect(this, SIGNAL(readFinished()), audioDecoder, SLOT(readFileFinished()));
 }
-Decoder::~Decoder()
+VideoDecoder::~VideoDecoder()
 {
 }
-void Decoder::displayVideo(QImage image)
+void VideoDecoder::displayVideo(QImage image)
 {
     emit gotVideo(image);
 }
-void Decoder::clearData()
+void VideoDecoder::clearData()
 {
     videoIndex = -1,
         audioIndex = -1,
@@ -39,13 +39,12 @@ void Decoder::clearData()
     audioDecoder->emptyAudioData();
     videoClk = 0;
 }
-void Decoder::setPlayState(Decoder::PlayState state)
+void VideoDecoder::setPlayState(VideoDecoder::PlayState state)
 {
-    //    qDebug() << "Set state: " << state;
     emit playStateChanged(state);
     playState = state;
 }
-bool Decoder::isRealtime(AVFormatContext* pFormatCtx)
+bool VideoDecoder::isRealtime(AVFormatContext* pFormatCtx)
 {
     if (!strcmp(pFormatCtx->iformat->name, "rtp")
         || !strcmp(pFormatCtx->iformat->name, "rtsp")
@@ -59,41 +58,33 @@ bool Decoder::isRealtime(AVFormatContext* pFormatCtx)
     }
     return false;
 }
-int Decoder::initFilter()
+int VideoDecoder::initFilter()
 {
     int ret;
     AVFilterInOut* out = avfilter_inout_alloc();
     AVFilterInOut* in = avfilter_inout_alloc();
-    /* output format */
     enum AVPixelFormat pixFmts[] = { AV_PIX_FMT_RGB32, AV_PIX_FMT_NONE };
-    /* free last graph */
     if (filterGraph) {
         avfilter_graph_free(&filterGraph);
     }
     filterGraph = avfilter_graph_alloc();
-    /* just add filter ouptut format rgb32,
-     * use for function avfilter_graph_parse_ptr()
-     */
     QString filter("pp=hb/vb/dr/al");
     QString args = QString("video_size=%1x%2:pix_fmt=%3:time_base=%4/%5:pixel_aspect=%6/%7")
         .arg(pCodecCtx->width).arg(pCodecCtx->height).arg(pCodecCtx->pix_fmt)
         .arg(videoStream->time_base.num).arg(videoStream->time_base.den)
         .arg(pCodecCtx->sample_aspect_ratio.num).arg(pCodecCtx->sample_aspect_ratio.den);
-    /* create source filter */
     ret = avfilter_graph_create_filter(&filterSrcCxt, avfilter_get_by_name("buffer"), "in", args.toLocal8Bit().data(), NULL, filterGraph);
     if (ret < 0) {
         qDebug() << "avfilter graph create filter failed, ret:" << ret;
         avfilter_graph_free(&filterGraph);
         goto out;
     }
-    /* create sink filter */
     ret = avfilter_graph_create_filter(&filterSinkCxt, avfilter_get_by_name("buffersink"), "out", NULL, NULL, filterGraph);
     if (ret < 0) {
         qDebug() << "avfilter graph create filter failed, ret:" << ret;
         avfilter_graph_free(&filterGraph);
         goto out;
     }
-    /* set sink filter ouput format */
     ret = av_opt_set_int_list(filterSinkCxt, "pix_fmts", pixFmts, AV_PIX_FMT_NONE, AV_OPT_SEARCH_CHILDREN);
     if (ret < 0) {
         qDebug() << "av opt set int list failed, ret:" << ret;
@@ -109,7 +100,6 @@ int Decoder::initFilter()
     in->pad_idx = 0;
     in->next = NULL;
     if (filter.isEmpty() || filter.isNull()) {
-        /* if no filter to add, just link source & sink */
         ret = avfilter_link(filterSrcCxt, 0, filterSinkCxt, 0);
         if (ret < 0) {
             qDebug() << "avfilter link failed, ret:" << ret;
@@ -118,7 +108,6 @@ int Decoder::initFilter()
         }
     }
     else {
-        /* add filter to graph */
         ret = avfilter_graph_parse_ptr(filterGraph, filter.toLatin1().data(), &in, &out, NULL);
         if (ret < 0) {
             qDebug() << "avfilter graph parse ptr failed, ret:" << ret;
@@ -126,7 +115,6 @@ int Decoder::initFilter()
             goto out;
         }
     }
-    /* check validity and configure all the links and formats in the graph */
     if ((ret = avfilter_graph_config(filterGraph, NULL)) < 0) {
         qDebug() << "avfilter graph config failed, ret:" << ret;
         avfilter_graph_free(&filterGraph);
@@ -136,9 +124,8 @@ out:
     avfilter_inout_free(&in);
     return ret;
 }
-void Decoder::decoderFile(QString file, QString type)
+void VideoDecoder::decoderFile(QString file, QString type)
 {
-    //    qDebug() << "Current state:" << playState;
     qDebug() << "File name:" << file << ", type:" << type;
     if (playState != STOP) {
         isStop = true;
@@ -153,25 +140,24 @@ void Decoder::decoderFile(QString file, QString type)
     currentType = type;
     this->start();
 }
-void Decoder::audioFinished()
+void VideoDecoder::audioFinished()
 {
     isStop = true;
     if (currentType == "music") {
         SDL_Delay(100);
-        emit playStateChanged(Decoder::FINISH);
+        emit playStateChanged(VideoDecoder::FINISH);
     }
 }
-void Decoder::stopVideo()
+void VideoDecoder::stopVideo()
 {
     if (playState == STOP) {
-        setPlayState(Decoder::STOP);
+        setPlayState(VideoDecoder::STOP);
         return;
     }
     gotStop = true;
     isStop = true;
     audioDecoder->stopAudio();
     if (currentType == "video") {
-        /* wait for decoding & reading stop */
         while (!isReadFinished || !isDecodeFinished) {
             SDL_Delay(10);
         }
@@ -182,7 +168,7 @@ void Decoder::stopVideo()
         }
     }
 }
-void Decoder::pauseVideo()
+void VideoDecoder::pauseVideo()
 {
     if (playState == STOP) {
         return;
@@ -198,48 +184,48 @@ void Decoder::pauseVideo()
         setPlayState(PLAYING);
     }
 }
-int Decoder::getVolume()
+int VideoDecoder::getVolume()
 {
     return audioDecoder->getVolume();
 }
-void Decoder::setVolume(int volume)
+void VideoDecoder::setVolume(int volume)
 {
     audioDecoder->setVolume(volume);
 }
-double Decoder::getCurrentTime()
+double VideoDecoder::getCurrentTime()
 {
     if (audioIndex >= 0) {
         return audioDecoder->getAudioClock();
     }
     return 0;
 }
-void Decoder::seekProgress(qint64 pos)
+void VideoDecoder::seekProgress(qint64 pos)
 {
     if (!isSeek) {
         seekPos = pos;
         isSeek = true;
     }
 }
-double Decoder::synchronize(AVFrame* frame, double pts)
+double VideoDecoder::synchronize(AVFrame* frame, double pts)
 {
     double delay;
     if (pts != 0) {
-        videoClk = pts; // Get pts,then set video clock to it
+        videoClk = pts;
     }
     else {
-        pts = videoClk; // Don't get pts,set it to video clock
+        pts = videoClk;
     }
     delay = av_q2d(pCodecCtx->time_base);
     delay += frame->repeat_pict * (delay * 0.5);
     videoClk += delay;
     return pts;
 }
-int Decoder::videoThread(void* arg)
+int VideoDecoder::videoThread(void* arg)
 {
     int ret;
     double pts;
     AVPacket packet;
-    Decoder* decoder = (Decoder*)arg;
+    VideoDecoder* decoder = (VideoDecoder*)arg;
     AVFrame* pFrame = av_frame_alloc();
     while (true) {
         if (decoder->isStop) {
@@ -250,9 +236,6 @@ int Decoder::videoThread(void* arg)
             continue;
         }
         if (decoder->videoQueue.queueSize() <= 0) {
-            /* while video file read finished exit decode thread,
-             * otherwise just delay for data input
-             */
             if (decoder->isReadFinished) {
                 break;
             }
@@ -260,7 +243,6 @@ int Decoder::videoThread(void* arg)
             continue;
         }
         decoder->videoQueue.dequeue(&packet, true);
-        /* flush codec buffer while received flush packet */
         if (!strcmp((char*)packet.data, "FLUSH")) {
             qDebug() << "Seek video";
             avcodec_flush_buffers(decoder->pCodecCtx);
@@ -311,7 +293,6 @@ int Decoder::videoThread(void* arg)
         }
         else {
             QImage tmpImage(pFrame->data[0], decoder->pCodecCtx->width, decoder->pCodecCtx->height, QImage::Format_RGB32);
-            /* deep copy, otherwise when tmpImage data change, this image cannot display */
             QImage image = tmpImage.copy();
             decoder->displayVideo(image);
         }
@@ -326,17 +307,17 @@ int Decoder::videoThread(void* arg)
     SDL_Delay(100);
     decoder->isDecodeFinished = true;
     if (decoder->gotStop) {
-        decoder->setPlayState(Decoder::STOP);
+        decoder->setPlayState(VideoDecoder::STOP);
     }
     else {
-        decoder->setPlayState(Decoder::FINISH);
+        decoder->setPlayState(VideoDecoder::FINISH);
     }
     return 0;
 }
-void Decoder::run()
+void VideoDecoder::run()
 {
     AVCodec* pCodec;
-    AVPacket pkt, * packet = &pkt;        // packet use in decoding
+    AVPacket pkt, * packet = &pkt;
     int seekIndex;
     bool realTime;
     pFormatCtx = avformat_alloc_context();
@@ -407,9 +388,9 @@ void Decoder::run()
         if (initFilter() < 0) {
             goto fail;
         }
-        SDL_CreateThread(&Decoder::videoThread, "video_thread", this);
+        SDL_CreateThread(&VideoDecoder::videoThread, "video_thread", this);
     }
-    setPlayState(Decoder::PLAYING);
+    setPlayState(VideoDecoder::PLAYING);
     while (true) {
         if (isStop) {
             break;
@@ -456,13 +437,13 @@ void Decoder::run()
             break;
         }
         if (packet->stream_index == videoIndex && currentType == "video") {
-            videoQueue.enqueue(packet); // video stream
+            videoQueue.enqueue(packet);
         }
         else if (packet->stream_index == audioIndex) {
-            audioDecoder->packetEnqueue(packet); // audio stream
+            audioDecoder->packetEnqueue(packet);
         }
         else if (packet->stream_index == subtitleIndex) {
-            av_packet_unref(packet);    // subtitle stream
+            av_packet_unref(packet);
         }
         else {
             av_packet_unref(packet);
@@ -486,7 +467,7 @@ fail:
     avformat_free_context(pFormatCtx);
     isReadFinished = true;
     if (currentType == "music") {
-        setPlayState(Decoder::STOP);
+        setPlayState(VideoDecoder::STOP);
     }
     qDebug() << "Main decoder finished.";
 }
